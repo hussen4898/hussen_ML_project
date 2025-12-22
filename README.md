@@ -33,7 +33,7 @@ Before you begin, ensure you have the following installed on your system:
 3.  **Install dependencies**:
     You will need the following libraries. You can install them manually:
     ```bash
-    pip install fastapi uvicorn pandas scikit-learn joblib openpyxl
+    pip install -r requirements.txt
     ```
 ## 🧠 Training the Model
 The project comes with a training script to generate the Machine Learning model.

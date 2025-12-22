@@ -1,0 +1,12 @@
+# Python 3.11.9
+
+# Web Framework
+fastapi==0.124.4
+uvicorn==0.38.0
+pydantic==2.12.5
+
+# Data Science & Machine Learning
+pandas==2.3.3
+scikit-learn==1.8.0
+joblib==1.5.2
+openpyxl==3.1.5
