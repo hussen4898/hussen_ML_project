@@ -7,11 +7,26 @@ from sklearn.metrics import mean_absolute_error, r2_score
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
+import os
+from pathlib import Path
+
+# Determine base directories and configurable paths via environment variables
+BASE_DIR = Path(__file__).resolve().parent
+# Default data path: repo-root/data/RF_shuffled_data.xlsx
+DEFAULT_DATA_PATH = BASE_DIR.parent / "data" / "RF_shuffled_data.xlsx"
+DATA_PATH = Path(os.environ.get("DATA_PATH", str(DEFAULT_DATA_PATH)))
+# Default model output path: backend/rf_model.joblib
+DEFAULT_MODEL_PATH = BASE_DIR / "rf_model.joblib"
+MODEL_PATH = Path(os.environ.get("MODEL_PATH", str(DEFAULT_MODEL_PATH)))
+# Default metrics path: backend/metrics.json
+DEFAULT_METRICS_PATH = BASE_DIR / "metrics.json"
+METRICS_PATH = Path(os.environ.get("METRICS_PATH", str(DEFAULT_METRICS_PATH)))
+
+print(f"Loading data from {DATA_PATH}...")
+if not DATA_PATH.exists():
+    raise FileNotFoundError(f"Data file not found at {DATA_PATH}. Please set DATA_PATH environment variable or place the dataset at the default location: {DEFAULT_DATA_PATH}")
 
 # 1. Load Data
-# Updated path to match user requirements
-DATA_PATH = r"C:\Users\husse\OneDrive\Desktop\web_app_CO2 emission_from_cars\data\RF_shuffled_data.xlsx"
-print(f"Loading data from {DATA_PATH}...")
 df = pd.read_excel(DATA_PATH)
 
 # 2. Define Features and Target
@@ -65,15 +80,17 @@ print(f"Mean Absolute Error (MAE): {mae:.4f}")
 print(f"R2 Score: {r2:.4f}")
 
 # 8. Save Model
-model_filename = r"C:\Users\husse\OneDrive\Desktop\web_app_CO2 emission_from_cars\backend\rf_model.joblib"
-joblib.dump(model_pipeline, model_filename)
-print(f"Model saved to {model_filename}")
+# Ensure output directory exists
+MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
+joblib.dump(model_pipeline, MODEL_PATH)
+print(f"Model saved to {MODEL_PATH}")
 
 # 9. Save Metrics (Optional, for frontend/backend usage)
 metrics = {
     "mae": round(mae, 2),
     "r2": round(r2, 4)
 }
-with open(r"C:\Users\husse\OneDrive\Desktop\web_app_CO2 emission_from_cars\backend\metrics.json", "w") as f:
+METRICS_PATH.parent.mkdir(parents=True, exist_ok=True)
+with open(METRICS_PATH, "w") as f:
     json.dump(metrics, f)
-print("Metrics saved to metrics.json")
+print(f"Metrics saved to {METRICS_PATH}")
