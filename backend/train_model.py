@@ -34,6 +34,7 @@ def calculate_file_hash(filepath):
 def main():
     # 1. Load Configuration
     # Define base directory (where this script is located: backend/)
+    
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     
     # Load paths from env or use defaults (relative to BASE_DIR)

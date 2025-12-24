@@ -34,6 +34,8 @@ API_KEY = os.getenv('API_KEY', 'c9f3c8a1d7b4e2f6a5d0c9e8b7a1f4c3e6d2b0a9c8f5e7d4
 MODEL_HASH_SHA256 = os.getenv('MODEL_HASH_SHA256')
 
 # 2. CORS
+# CORS is intentionally permissive for development and portfolio/demo purposes.
+# In production, allowed origins MUST be restricted to trusted frontend domains.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,
@@ -46,7 +48,7 @@ app.add_middleware(
 model = None
 metrics_data = {}
 
-# Rate Limiting (Simple In-Memory)
+# Rate Limiting (Simple In-Memory), NOT adequate for production. Suggest Redis or similar for distributed rate limiting.
 # Map IP -> list of timestamps
 rate_limit_store = defaultdict(list)
 RATE_LIMIT_DURATION = 60  # seconds
@@ -177,11 +179,16 @@ def predict_emission(features: CarFeatures):
         
     except Exception as e:
         # Log the full error but return generic to client
+        # Full exception details are logged for debugging purposes only.
+        # Logs must be properly secured and never exposed to end users or public systems,
+        # as they may contain sensitive internal information.
         logger.exception("Prediction failed")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 if __name__ == "__main__":
     import uvicorn
+    # For external/production deployments, further web server security and firewalls 
+    # (or running on localhost) are recommended.
     host = os.getenv("HOST", "0.0.0.0")
     port = int(os.getenv("PORT", 8000))
     uvicorn.run(app, host=host, port=port)
