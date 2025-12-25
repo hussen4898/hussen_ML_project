@@ -2,6 +2,10 @@
 # hussen_ML_project
 
 # Car CO2 Emission Predictor
+
+> [!IMPORTANT]
+> **Educational Project**: This application is designed for **demonstration and training purposes only**. While it implements security best practices (like key hashing and environment-based configuration), it is not intended for mission-critical production deployment without further hardening.
+
 This project is a Machine Learning web application designed to predict CO2 emissions from vehicles based on their specifications. It utilizes a Random Forest Regression model trained on vehicle data to provide accurate emission estimates.
 ## 🚀 Project Overview
 The **Car CO2 Emission Predictor** solves the problem of estimating environmental impact by analyzing key vehicle characteristics. It provides a simple, user-friendly interface for users to input car details and receive instant predictions.
